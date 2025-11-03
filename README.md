@@ -1,36 +1,171 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🥬 **Simon’s Nutrition**
+### “Transparency Never Tasted This Good”
 
-## Getting Started
+Built with **Next.js**, **Supabase**, and **React-PDF** — because even our macros deserve good design.  
+From crispy **fries** to creamy **milkshakes**, everything’s measured, styled, and printable in pure Simon’s fashion.
 
-First, run the development server:
+---
+
+## 🍔 **Stack Overview**
+
+#### 🧱 **Layer:** Frontend  
+**⚙️ Tech:** Next.js (App Router), Tailwind CSS, Framer Motion  
+**🗒️ Notes:** Lightning-fast admin and public UI with smooth animations.
+
+#### 🧱 **Layer:** Backend  
+**⚙️ Tech:** Supabase  
+**🗒️ Notes:** Stores every gram and allergen with surgical precision.
+
+#### 🧱 **Layer:** PDF Engine  
+**⚙️ Tech:** @react-pdf/renderer  
+**🗒️ Notes:** Generates branded, print-ready nutrition tables.
+
+#### 🧱 **Layer:** Auth  
+**⚙️ Tech:** Admin Token  
+**🗒️ Notes:** Lightweight protection for edits — no random lettuce can sneak in.
+
+---
+
+## ⚡ **Features**
+
+✨ **Instant Editing** — Live inline editing for every menu item.  
+📄 **One-Click PDF** — Pixel-perfect export with vertical headers.  
+🍟 **Smart Allergen Grid** — Dots mark allergens for clear visual feedback.  
+🌈 **Playful Public Page** — Animated, branded, and beautifully responsive.  
+💚 **On-Brand Colors** — Simon’s green and white dominate every detail.
+
+---
+
+## 🚀 **Getting Started**
+
+```bash
+git clone https://github.com/<your-username>/simons-nutrition.git
+cd simons-nutrition
+npm install
+cp .env.example .env
+
+
+Set up your environment:
+
+```bash
+SUPABASE_SERVICE_ROLE=your_secret_key
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+```
+
+Run the dev server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open: **[http://localhost:3000](http://localhost:3000)**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+🧠 **Dev Commands**
 
-## Learn More
+```bash
+npm run dev      # start development
+npm run build    # build for production
+npm run start    # serve production build
+npm run lint     # clean up your messy code
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+🧑‍🍳 **Admin Panel**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Path:** `/admin`
 
-## Deploy on Vercel
+Add, edit, and delete menu items.
+Category dropdowns (Burgers, Fries, Milkshakes, Sauces, Refill Drinks).
+Numeric inputs for kcal, fat, sugar, protein, etc.
+Text field for allergen list.
+Token-based access stored in localStorage.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+A simple “Save token” button gives you editing superpowers. 🔐
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+🧾 **PDF Generator**
+
+**Path:** `/api/generate-pdf`
+
+A4 layout with green header bar and white typography.
+Vertical nutrient and allergen labels.
+Section bars by category.
+Grey allergen zone for perfect contrast.
+Open Sans font for crisp printing.
+
+Each export = one perfectly balanced, branded table.
+
+---
+
+🌈 **Public Page**
+
+**Path:** `/nutrition`
+
+Motion-driven design with Framer Motion.
+Interactive PDF preview embedded in the page.
+Button to open or download the latest version.
+Smooth green-white gradients for that Simon’s freshness.
+
+Calories never looked this good.
+
+---
+
+🗂️ **Folder Structure**
+
+```
+simons-nutrition/
+├─ src/
+│  ├─ app/
+│  │  ├─ api/generate-pdf/route.ts     # PDF generator
+│  │  ├─ admin/page.tsx                # Admin dashboard
+│  │  └─ nutrition/page.tsx            # Public page
+│  ├─ lib/supabaseAdmin.ts             # Supabase admin client
+│  └─ types/nutrition.ts               # Type definitions
+│
+├─ public/
+│  └─ simonsburger_kaloria_tablazat_template.png
+│
+├─ .env.example
+├─ package.json
+├─ tailwind.config.ts
+└─ README.md
+```
+
+---
+
+🎨 **Brand Palette**
+
+| Name             | Usage             | HEX       |
+| :--------------- | :---------------- | :-------- |
+| 🥬 Simon’s Green | Primary           | `#0FA650` |
+| ⚪ White          | Background / Text | `#FFFFFF` |
+| 🌑 Charcoal      | Body Text         | `#222222` |
+| 💨 Light Grey    | Grid Lines        | `#C9C9C9` |
+
+---
+
+🧭 **Roadmap**
+
+* [ ] Host on Vercel with Supabase env support
+* [ ] Add mobile-optimized admin view
+* [ ] Generate multipage PDF for long menus
+* [ ] Add AI allergen auto-tagging
+* [ ] Introduce versioned PDFs with change log
+
+---
+
+👨‍🍳 **Credits**
+
+Built by [**@semseiizsak**](https://github.com/semseiizsak) 💚
+For **Simon’s Burger** 
+
+---
+
+🥳 **Fun Fact**
+
+A well-structured PDF is like a perfect burger: layers aligned, sauces balanced, zero overflow.
+
