@@ -6,8 +6,56 @@ import {
   Text,
   View,
   StyleSheet,
+  Image,
+  Font, // ⬅️ add this
 } from "@react-pdf/renderer";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import path from "path";
+import fs from "fs";
+
+// ---- REGISTER OPEN SANS (400/700/800) ----
+Font.register({
+  family: "Open Sans",
+  fonts: [
+    {
+      src: path.join(
+        process.cwd(),
+        "public",
+        "fonts",
+        "open-sans",
+        "static",
+        "OpenSans-Regular.ttf"
+      ),
+      fontWeight: 400,
+    },
+    {
+      src: path.join(
+        process.cwd(),
+        "public",
+        "fonts",
+        "open-sans",
+        "static",
+        "SF-Pro-Display-Black.otf"
+      ),
+      fontWeight: 700,
+    },
+    {
+      src: path.join(
+        process.cwd(),
+        "public",
+        "fonts",
+        "open-sans",
+        "static",
+        "SF-Pro-Display-Black.otf"
+      ),
+      fontWeight: 800,
+    },
+  ],
+});
+
+const logoPath = path.join(process.cwd(), "public", "simons_logo.png");
+const logoData = fs.readFileSync(logoPath);
+const logoBase64 = `data:image/png;base64,${logoData.toString("base64")}`;
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -18,17 +66,17 @@ const PAGE_HEIGHT = 842;
 
 /* --- LAYOUT CONSTANTS --- */
 const MARGIN = { l: 15, r: 22, t: 22, b: 22 };
-const HEADER_BAR_HEIGHT = 80;
-const COLUMN_LABEL_OFFSET = 10;
+const HEADER_BAR_HEIGHT = 85;
+const COLUMN_LABEL_OFFSET = 15;
 const LABEL_ROW_HEIGHT = 24;
 const SECTION_BAR_HEIGHT = 18;
-const ROW_HEIGHT = 18;
+const ROW_HEIGHT = 15;
 const SECTION_SPACING = 8;
 
 /* --- COLOURS --- */
 const GREEN = "#2E9747";
-const GRID_LIGHT = "#C9C9C9";
-const GRID_DARK = "#999999";
+const GRID_LIGHT = "#676767ff";
+const GRID_DARK = "#292929ff";
 
 /* --- COLUMN WIDTHS --- */
 const NAME_COL_WIDTH = 110;
@@ -136,23 +184,27 @@ const styles = StyleSheet.create({
     width: PAGE_WIDTH,
     height: PAGE_HEIGHT,
     backgroundColor: "#fff",
-    fontFamily: "Helvetica-Bold",
+    fontFamily: "Open Sans",
     fontSize: 8,
+    fontWeight: 400, // default: Regular
   },
   headerBar: {
     position: "absolute",
-    top: 0,
+    top: -10,
     left: 0,
-    width: PAGE_WIDTH,
+    width: PAGE_WIDTH + 20,
     height: HEADER_BAR_HEIGHT,
     backgroundColor: GREEN,
   },
   headerText: {
     position: "absolute",
-    top: MARGIN.t,
-    left: MARGIN.l,
+    top: MARGIN.t - 2,
+    left: MARGIN.l + 20,
     color: "#fff",
     fontSize: 18,
+    fontFamily: "Open Sans",
+    fontWeight: 1000, // ⬅️ Header: ExtraBold
+    lineHeight: 1.1,
   },
 });
 
@@ -186,26 +238,51 @@ export async function GET(_req: NextRequest) {
   const bars: { y: number; title: string }[] = [];
   const rowsDraw: any[] = [];
 
-  for (const sec of SECTIONS) {
+  for (let s = 0; s < SECTIONS.length; s++) {
+    const sec = SECTIONS[s];
+
+    // Add spacing *only* before sections after the first
+    if (s > 0) y += SECTION_SPACING;
+
+    // Section bar
     bars.push({ y, title: sec.title });
-    y += SECTION_BAR_HEIGHT + SECTION_SPACING / 2;
+    y += SECTION_BAR_HEIGHT;
+
     const items = grouped[sec.key] || [];
     items.forEach((item: any) => {
       rowsDraw.push({ item, y });
       y += ROW_HEIGHT;
     });
-    y += SECTION_SPACING / 2;
   }
   const endY = y;
 
   const doc = (
     <Document>
-      <Page size={{ width: PAGE_WIDTH, height: PAGE_HEIGHT }} style={styles.page}>
+      <Page
+        size={{ width: PAGE_WIDTH, height: PAGE_HEIGHT }}
+        style={styles.page}
+      >
+        {/* Header */}
         {/* Header */}
         <View style={styles.headerBar} />
+
+        {/* Header title */}
         <Text style={styles.headerText}>
           SIMON'S BURGER TÁPANYAG{"\n"}ÉS ALLERGÉNTÁBLÁZAT
         </Text>
+
+        {/* Header logo on the right */}
+        <Image
+          src={logoBase64}
+          style={{
+            position: "absolute",
+            top: MARGIN.t - 5,
+            right: MARGIN.r,
+            width: 85,
+            height: 45,
+            objectFit: "contain",
+          }}
+        />
 
         {/* Rotated nutrient headers */}
         {nutrientColumns.map((col, i) => (
@@ -213,12 +290,14 @@ export async function GET(_req: NextRequest) {
             key={col.key}
             style={{
               position: "absolute",
-              top: HEADER_BAR_HEIGHT + 50,
+              top: HEADER_BAR_HEIGHT + 54,
               left: X_BASE + i * NUTRIENT_COL_WIDTH + 12,
-              fontSize: 7,
+              fontSize: 8,
               transform: "rotate(-90deg)",
               transformOrigin: "left top",
               textAlign: "center",
+              fontFamily: "Open Sans",
+              fontWeight: 700, // ⬅️ Bold
             }}
           >
             {col.label.replace(/\n/g, " ")}
@@ -231,12 +310,14 @@ export async function GET(_req: NextRequest) {
             key={`alg-${ak}`}
             style={{
               position: "absolute",
-              top: HEADER_BAR_HEIGHT + 52,
+              top: HEADER_BAR_HEIGHT + 54,
               left: allergenAreaX + i * aColW + aColW / 2 - 4,
-              fontSize: 6,
+              fontSize: 7,
               transform: "rotate(-90deg)",
               transformOrigin: "left top",
               textAlign: "center",
+              fontFamily: "Open Sans",
+              fontWeight: 400, // ⬅️ Regular
             }}
           >
             {allergenNames[ak]}
@@ -295,7 +376,6 @@ export async function GET(_req: NextRequest) {
           />
         ))}
 
-        {/* Section bars */}
         {bars.map((bar) => (
           <View
             key={`bar-${bar.y}`}
@@ -316,6 +396,8 @@ export async function GET(_req: NextRequest) {
                 top: 3,
                 color: "#fff",
                 fontSize: 10,
+                fontFamily: "Open Sans",
+                fontWeight: 800, // ⬅️ ExtraBold (food categories)
               }}
             >
               {bar.title}
@@ -330,15 +412,20 @@ export async function GET(_req: NextRequest) {
           const yPos = r.y + 3;
           return (
             <View key={`row-${i}`}>
+              {/* Food name — Bold (700) */}
               <Text
                 style={{
                   position: "absolute",
                   top: yPos,
                   left: MARGIN.l + 3,
+                  fontFamily: "Open Sans",
+                  fontWeight: 700, // ⬅️ Bold
                 }}
               >
                 {it.name}
               </Text>
+
+              {/* Nutrient values — Regular (400) */}
               {nutrientColumns.map((c, j) => (
                 <Text
                   key={`${i}-${c.key}`}
@@ -346,20 +433,27 @@ export async function GET(_req: NextRequest) {
                     position: "absolute",
                     top: yPos,
                     left: X_BASE + j * NUTRIENT_COL_WIDTH + 3,
+                    fontFamily: "Open Sans",
+                    fontWeight: 400, // ⬅️ Regular
                   }}
                 >
                   {it[c.key] ?? ""}
                 </Text>
               ))}
+
+              {/* Allergen dots — keep Regular (or set if you prefer) */}
               {allergenColumns.map((ak, ai) =>
                 allerg.has(ak) ? (
                   <Text
                     key={`${i}-${ak}`}
                     style={{
                       position: "absolute",
-                      top: yPos,
-                      left: allergenAreaX + ai * aColW + aColW / 2 - 2,
-                      fontSize: 10,
+                      top: yPos - 10,
+                      left: allergenAreaX + ai * aColW + aColW / 2 - 3,
+                      fontSize: 20,
+                      color: "#2E9747",
+                      fontFamily: "Open Sans",
+                      fontWeight: 400, // ⬅️ Regular (visual weight comes from size/color)
                     }}
                   >
                     •
