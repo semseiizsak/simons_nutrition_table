@@ -70,7 +70,7 @@ const HEADER_BAR_HEIGHT = 85;
 const COLUMN_LABEL_OFFSET = 15;
 const LABEL_ROW_HEIGHT = 24;
 const SECTION_BAR_HEIGHT = 18;
-const ROW_HEIGHT = 15;
+const ROW_HEIGHT = 13;
 const SECTION_SPACING = 8;
 
 /* --- COLOURS --- */
@@ -420,6 +420,7 @@ export async function GET(_req: NextRequest) {
                   left: MARGIN.l + 3,
                   fontFamily: "Open Sans",
                   fontWeight: 700, // ⬅️ Bold
+                  fontSize: 7.5,
                 }}
               >
                 {it.name}
@@ -432,9 +433,10 @@ export async function GET(_req: NextRequest) {
                   style={{
                     position: "absolute",
                     top: yPos,
-                    left: X_BASE + j * NUTRIENT_COL_WIDTH + 3,
+                    left: X_BASE + j * NUTRIENT_COL_WIDTH + 2,
                     fontFamily: "Open Sans",
                     fontWeight: 400, // ⬅️ Regular
+                    fontSize: 6.5,
                   }}
                 >
                   {it[c.key] ?? ""}

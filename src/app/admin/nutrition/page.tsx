@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import type { NutritionItem } from "@/types/nutrition";
+import Papa from "papaparse";
 
 const ADMIN_TOKEN =
   typeof window !== "undefined"
@@ -77,6 +78,57 @@ export default function NutritionAdminPage() {
     if (res.ok) setItems((prev) => prev.filter((it) => it.id !== id));
   };
 
+  const importCSV = async (file: File) => {
+    const text = await file.text();
+    const { data, errors } = Papa.parse(text, {
+      header: true,
+      skipEmptyLines: true,
+      dynamicTyping: true,
+      delimitersToGuess: [",", ";", "\t", "|"],
+    });
+
+    if (errors.length) {
+      alert("❌ CSV parse error: " + errors[0].message);
+      return;
+    }
+
+    const rows: NutritionItem[] = data
+      .filter((r: any) => r.name) // ignore empty rows
+      .map((r: any, i: number) => ({
+        name: r.name?.trim() || "",
+        kcal: Number(r.kcal) || 0,
+        fat_g: Number(r.fat_g) || 0,
+        sat_fat_g: Number(r.sat_fat_g) || 0,
+        carbs_g: Number(r.carbs_g) || 0,
+        sugar_g: Number(r.sugar_g) || 0,
+        protein_g: Number(r.protein_g) || 0,
+        salt_g: Number(r.salt_g) || 0,
+        fiber_g: Number(r.fiber_g) || 0,
+        allergens: r.allergens || "",
+        category: r.category || "BURGEREK",
+        position: Number(r.position) || i + 1,
+      }));
+
+    if (!confirm(`Import ${rows.length} items into DB?`)) return;
+
+    for (const row of rows) {
+      const res = await fetch("/api/nutrition", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-token": token,
+        },
+        body: JSON.stringify(row),
+      });
+      if (!res.ok) {
+        console.error("Failed to insert row:", row.name);
+      }
+    }
+
+    alert(`✅ Imported ${rows.length} items`);
+    location.reload();
+  };
+
   if (loading)
     return (
       <div className="flex items-center justify-center h-screen text-xl font-bold text-[#0fa650] animate-pulse">
@@ -115,6 +167,26 @@ export default function NutritionAdminPage() {
           >
             Save Token
           </button>
+        </div>
+
+        {/* CSV IMPORT */}
+        <div className="flex items-center gap-4 bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm">
+          <label className="font-semibold text-gray-700">
+            Import CSV:
+            <input
+              type="file"
+              accept=".csv"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) importCSV(file);
+              }}
+              className="ml-3"
+            />
+          </label>
+          <span className="text-sm text-gray-500">
+            (columns: name, kcal, fat_g, sat_fat_g, carbs_g, sugar_g, protein_g,
+            salt_g, fiber_g, allergens, category, position)
+          </span>
         </div>
 
         {/* TABLE */}
