@@ -58,7 +58,7 @@ export default function NutritionPublic() {
             onClick={() => setShowPreview((s) => !s)}
             className="border-2 border-[#0fa650] text-[#0fa650] hover:bg-[#0fa650]/10 font-semibold text-lg px-10 py-3 rounded-full shadow-md transition-all"
           >
-            {showPreview ? "Hide Preview 🫥" : "Quick Peek 👀"}
+            {showPreview ? "Hide Preview 🙈" : "Quick Peek 👀"}
           </motion.button>
         </div>
 
@@ -70,7 +70,7 @@ export default function NutritionPublic() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 40 }}
               transition={{ duration: 0.6 }}
-              className="mt-20 relative"
+              className="mt-10 relative"
             >
               <iframe
                 src="/api/generate-pdf"
@@ -93,9 +93,18 @@ export default function NutritionPublic() {
           transition={{ delay: 1.2 }}
           className="mt-12 text-sm text-gray-500"
         >
-          Updated every time we change ANYTHING 🔥 Stay tasty, stay informed.
+          Updated every time we drop a new burger 🔥 Stay tasty, stay informed.
         </motion.p>
       </div>
+
+      {/* floating footer flair */}
+      <motion.div
+        animate={{ y: [0, -8, 0] }}
+        transition={{ repeat: Infinity, duration: 2.5 }}
+        className="absolute bottom-6 right-8 text-3xl sm:text-4xl"
+      >
+        🍔
+      </motion.div>
     </main>
   );
 }
