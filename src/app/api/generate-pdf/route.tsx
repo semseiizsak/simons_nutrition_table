@@ -477,9 +477,30 @@ export async function GET(_req: NextRequest) {
             color: "#333",
           }}
         >
-          Ételeink a táblázatban felsorolt allergéneket tartalmazhatják. A
-          jelzett allergének mellett esetenként egyéb allergének is
-          előfordulhatnak.
+          A Simon’s Burger mindent megtesz annak érdekében, hogy azonosítsa
+          azokat az összetevőket, amelyek allergiás reakciót válthatnak ki az
+          ételallergiában szenvedő vendégeknél. Konyhai csapatunk folyamatosan
+          képzést kap az ételallergiák súlyosságáról és kezeléséről. Ennek
+          ellenére mindig fennáll a keresztszennyeződés kockázata. Előfordulhat,
+          hogy a beszállítóink bármikor, előzetes értesítés nélkül
+          megváltoztatják az általuk gyártott alapanyagok összetételét. Az
+          összetevők jellege miatt a konyhai folyamatok során is történhet
+          véletlen átfedés. Az ételallergiával élő vendégeknek ezért fontos
+          tisztában lenniük ezzel a kockázattal. A Simon’s Burger és franchise
+          partnerei nem vállalnak felelősséget az esetleges allergiás
+          reakciókért, illetve azokért az anyagokért, amelyekkel vendégeink a
+          fogyasztás során kapcsolatba kerülhetnek.
+          <br />
+          <br />
+          A táplálkozási információk beszállítóinktól, iparági forrásokból és
+          akkreditált laboratóriumokban végzett vizsgálatokból származó, átlagos
+          értékeken alapulnak. Az adatok a hatályos szabályozások szerinti
+          kerekítésekkel és számítási eljárásokkal készülnek. Mivel ételeinket
+          minden esetben frissen, kézzel készítjük, az adagok és a tápértékek
+          kisebb eltéréseket mutathatnak.
+          <br />
+          <br />A napi ajánlott beviteli értékek 2 000 kalóriás étrend esetén:
+          20 gramm telített zsír és 2 300 milligramm nátrium.
         </Text>
       </Page>
     </Document>
