@@ -44,7 +44,7 @@ export default function NutritionPublic() {
           <motion.a
             whileHover={{ scale: 1.05, rotate: -2 }}
             whileTap={{ scale: 0.96 }}
-            href="/api/generate-pdf"
+            href="/api/simons-nutrition-table"
             target="_blank"
             rel="noreferrer"
             className="bg-[#0fa650] hover:bg-[#0c8e45] text-white font-semibold text-lg px-10 py-3 rounded-full shadow-lg transition-all"
@@ -73,7 +73,7 @@ export default function NutritionPublic() {
               className="mt-20 relative"
             >
               <iframe
-                src="/api/generate-pdf"
+                src="/api/simons-nutrition-table"
                 className="w-[90vw] max-w-4xl h-[75vh] border-8 border-[#0fa650] rounded-3xl shadow-2xl"
               />
               <motion.div

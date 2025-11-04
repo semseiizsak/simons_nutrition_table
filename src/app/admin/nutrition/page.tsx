@@ -145,7 +145,7 @@ export default function NutritionAdminPage() {
             Simon’s Burger — Nutrition Admin
           </h1>
           <a
-            href="/api/generate-pdf"
+            href="/api/simons-nutrition-table"
             target="_blank"
             className="bg-[#0fa650] hover:bg-[#0c8c43] transition-colors text-white font-semibold px-5 py-2 rounded-lg shadow-sm"
           >
