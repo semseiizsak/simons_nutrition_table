@@ -466,7 +466,6 @@ export async function GET(_req: NextRequest) {
           );
         })}
 
-        {/* Footer note */}
         <Text
           style={{
             position: "absolute",
@@ -475,6 +474,7 @@ export async function GET(_req: NextRequest) {
             right: MARGIN.r,
             fontSize: 8,
             color: "#333",
+            lineHeight: 1.4,
           }}
         >
           A Simon’s Burger mindent megtesz annak érdekében, hogy azonosítsa
@@ -490,17 +490,12 @@ export async function GET(_req: NextRequest) {
           partnerei nem vállalnak felelősséget az esetleges allergiás
           reakciókért, illetve azokért az anyagokért, amelyekkel vendégeink a
           fogyasztás során kapcsolatba kerülhetnek.
-          <br />
-          <br />
-          A táplálkozási információk beszállítóinktól, iparági forrásokból és
-          akkreditált laboratóriumokban végzett vizsgálatokból származó, átlagos
-          értékeken alapulnak. Az adatok a hatályos szabályozások szerinti
-          kerekítésekkel és számítási eljárásokkal készülnek. Mivel ételeinket
-          minden esetben frissen, kézzel készítjük, az adagok és a tápértékek
-          kisebb eltéréseket mutathatnak.
-          <br />
-          <br />A napi ajánlott beviteli értékek 2 000 kalóriás étrend esetén:
-          20 gramm telített zsír és 2 300 milligramm nátrium.
+          {"\n\n"}A táplálkozási információk beszállítóinktól, iparági
+          forrásokból és akkreditált laboratóriumokban végzett vizsgálatokból
+          származó, átlagos értékeken alapulnak. Az adatok a hatályos
+          szabályozások szerinti kerekítésekkel és számítási eljárásokkal
+          készülnek. Mivel ételeinket minden esetben frissen, kézzel készítjük,
+          az adagok és a tápértékek kisebb eltéréseket mutathatnak.
         </Text>
       </Page>
     </Document>
