@@ -477,25 +477,10 @@ export async function GET(_req: NextRequest) {
             lineHeight: 1.4,
           }}
         >
-          A Simon’s Burger mindent megtesz annak érdekében, hogy azonosítsa
-          azokat az összetevőket, amelyek allergiás reakciót válthatnak ki az
-          ételallergiában szenvedő vendégeknél. Konyhai csapatunk folyamatosan
-          képzést kap az ételallergiák súlyosságáról és kezeléséről. Ennek
-          ellenére mindig fennáll a keresztszennyeződés kockázata. Előfordulhat,
-          hogy a beszállítóink bármikor, előzetes értesítés nélkül
-          megváltoztatják az általuk gyártott alapanyagok összetételét. Az
-          összetevők jellege miatt a konyhai folyamatok során is történhet
-          véletlen átfedés. Az ételallergiával élő vendégeknek ezért fontos
-          tisztában lenniük ezzel a kockázattal. A Simon’s Burger és franchise
-          partnerei nem vállalnak felelősséget az esetleges allergiás
-          reakciókért, illetve azokért az anyagokért, amelyekkel vendégeink a
-          fogyasztás során kapcsolatba kerülhetnek.
-          {"\n\n"}A táplálkozási információk beszállítóinktól, iparági
-          forrásokból és akkreditált laboratóriumokban végzett vizsgálatokból
-          származó, átlagos értékeken alapulnak. Az adatok a hatályos
-          szabályozások szerinti kerekítésekkel és számítási eljárásokkal
-          készülnek. Mivel ételeinket minden esetben frissen, kézzel készítjük,
-          az adagok és a tápértékek kisebb eltéréseket mutathatnak.
+          Az egyes termékeinkben található allergének ételeink feldolgozási technológiájának jellegéből adódóan nyomokban előfordulhatnak más termékekben is.
+  A kihelyezett tájékoztatón és a weboldalon található információkat a SIMON'S BURGER® beszállítók bocsájtották rendelkezésünkre. Konyháinkat és élelmiszerkezelési 
+          eljárásainkat igyekszünk úgy alakítani, hogy biztosítsuk az Ön biztonságát és egészségét. Hozzávalóink kezelésénél minden alapanyagot elkülönítünk annak érdekében, 
+          hogy ne érintkezzenek allergénekkel, de ennek a lehetőségét nem tudjuk tökéletesen kizárni. A
         </Text>
       </Page>
     </Document>
