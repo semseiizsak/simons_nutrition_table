@@ -37,6 +37,8 @@ export interface BrandConfig {
   /** logo display size in the PDF header, in pt */
   logoWidth: number;
   logoHeight: number;
+  /** logo's `top` offset in the PDF header bar, in pt */
+  logoTop: number;
   /** may contain a literal \n for a line break */
   pdfHeaderTitle: string;
   /** Content-Disposition filename for the generated PDF */
@@ -61,6 +63,7 @@ export const BRANDS: Record<string, BrandConfig> = {
     logoFile: "simons_logo.png",
     logoWidth: 85,
     logoHeight: 45,
+    logoTop: 17,
     pdfHeaderTitle: "SIMON'S BURGER TÁPANYAG\nÉS ALLERGÉNTÁBLÁZAT",
     pdfFilename: "simonsburger_nutrition.pdf",
     sections: [
@@ -99,6 +102,8 @@ export const BRANDS: Record<string, BrandConfig> = {
     // at a comparable visual weight in the header bar
     logoWidth: 114,
     logoHeight: 55,
+    // centered vertically in the 85pt header bar (bar spans -10..75)
+    logoTop: 5,
     pdfHeaderTitle: "TRAVIS' TENDERS\nTÁPANYAGTÁBLÁZAT",
     pdfFilename: "travistenders_nutrition.pdf",
     sections: [

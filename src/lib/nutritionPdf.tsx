@@ -289,7 +289,7 @@ export async function renderNutritionPdf(brand: BrandConfig, rows: any[]) {
           src={logoBase64}
           style={{
             position: "absolute",
-            top: MARGIN.t - 5,
+            top: brand.logoTop,
             right: MARGIN.r,
             width: brand.logoWidth,
             height: brand.logoHeight,
