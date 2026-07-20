@@ -34,6 +34,9 @@ export interface BrandConfig {
   primaryColor: string;
   /** filename under public/ */
   logoFile: string;
+  /** logo display size in the PDF header, in pt */
+  logoWidth: number;
+  logoHeight: number;
   /** may contain a literal \n for a line break */
   pdfHeaderTitle: string;
   /** Content-Disposition filename for the generated PDF */
@@ -56,6 +59,8 @@ export const BRANDS: Record<string, BrandConfig> = {
     displayName: "Simon's Burger",
     primaryColor: "#2E9747",
     logoFile: "simons_logo.png",
+    logoWidth: 85,
+    logoHeight: 45,
     pdfHeaderTitle: "SIMON'S BURGER TÁPANYAG\nÉS ALLERGÉNTÁBLÁZAT",
     pdfFilename: "simonsburger_nutrition.pdf",
     sections: [
@@ -89,6 +94,11 @@ export const BRANDS: Record<string, BrandConfig> = {
     displayName: "Travis' Tenders",
     primaryColor: "#CE1441",
     logoFile: "travis_logo.png",
+    // source art has a lot of transparent padding baked in even after
+    // trimming, so it's sized noticeably larger than Simon's to read
+    // at a comparable visual weight in the header bar
+    logoWidth: 114,
+    logoHeight: 55,
     pdfHeaderTitle: "TRAVIS' TENDERS\nTÁPANYAGTÁBLÁZAT",
     pdfFilename: "travistenders_nutrition.pdf",
     sections: [

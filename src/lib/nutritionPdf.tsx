@@ -291,8 +291,8 @@ export async function renderNutritionPdf(brand: BrandConfig, rows: any[]) {
             position: "absolute",
             top: MARGIN.t - 5,
             right: MARGIN.r,
-            width: 85,
-            height: 45,
+            width: brand.logoWidth,
+            height: brand.logoHeight,
             objectFit: "contain",
           }}
         />
