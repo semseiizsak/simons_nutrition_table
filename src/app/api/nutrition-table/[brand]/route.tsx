@@ -6,10 +6,13 @@ import { renderNutritionPdf } from "@/lib/nutritionPdf";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-// Legacy URL, kept working for backward compatibility with existing links.
-// New code should use /api/nutrition-table/[brand] instead.
-export async function GET(_req: NextRequest) {
-  const brand = BRANDS.simons;
+export async function GET(
+  _req: NextRequest,
+  context: { params: Promise<{ brand: string }> }
+) {
+  const { brand: slug } = await context.params;
+  const brand = BRANDS[slug];
+  if (!brand) return new Response("Unknown brand", { status: 404 });
 
   const { data: rows, error } = await supabaseAdmin
     .from("nutrition_items")
@@ -27,7 +30,7 @@ export async function GET(_req: NextRequest) {
   return new Response(buffer as any, {
     headers: {
       "Content-Type": "application/pdf",
-      "Content-Disposition": "inline; filename=simonsburger_nutrition.pdf",
+      "Content-Disposition": `inline; filename=${brand.pdfFilename}`,
     },
   });
 }
