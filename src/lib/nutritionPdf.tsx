@@ -18,7 +18,7 @@ Font.register({
   fonts: [
     {
       src: path.join(
-        process.cwd(),
+        /*turbopackIgnore: true*/ process.cwd(),
         "public",
         "fonts",
         "open-sans",
@@ -29,7 +29,7 @@ Font.register({
     },
     {
       src: path.join(
-        process.cwd(),
+        /*turbopackIgnore: true*/ process.cwd(),
         "public",
         "fonts",
         "open-sans",
@@ -40,7 +40,7 @@ Font.register({
     },
     {
       src: path.join(
-        process.cwd(),
+        /*turbopackIgnore: true*/ process.cwd(),
         "public",
         "fonts",
         "open-sans",
@@ -52,10 +52,33 @@ Font.register({
   ],
 });
 
+// NOTE: paths must be literal (not built from a variable) so Next.js's
+// build-time file tracing can see exactly which files a serverless
+// function needs. A dynamic path (e.g. path.join(..., brand.logoFile))
+// makes tracing fall back to bundling the whole public/ directory,
+// which blows past Vercel's function size limit because of public/fonts.
 const logoCache: Record<string, string> = {};
 function getLogoBase64(brand: BrandConfig): string {
   if (!logoCache[brand.slug]) {
-    const logoPath = path.join(process.cwd(), "public", brand.logoFile);
+    let logoPath: string;
+    switch (brand.slug) {
+      case "simons":
+        logoPath = path.join(
+          /*turbopackIgnore: true*/ process.cwd(),
+          "public",
+          "simons_logo.png"
+        );
+        break;
+      case "travis":
+        logoPath = path.join(
+          /*turbopackIgnore: true*/ process.cwd(),
+          "public",
+          "travis_logo.png"
+        );
+        break;
+      default:
+        throw new Error(`No logo path configured for brand: ${brand.slug}`);
+    }
     const logoData = fs.readFileSync(logoPath);
     logoCache[brand.slug] = `data:image/png;base64,${logoData.toString(
       "base64"
