@@ -10,7 +10,7 @@ import {
 } from "@react-pdf/renderer";
 import path from "path";
 import fs from "fs";
-import { BrandConfig, NUTRIENT_FIELD_DEFS } from "./brands";
+import { BrandConfig, NUTRIENT_FIELD_DEFS, ALLERGEN_FIELD_DEFS } from "./brands";
 
 // ---- REGISTER OPEN SANS (400/700/800) — shared across brands ----
 Font.register({
@@ -107,41 +107,6 @@ const GRID_DARK = "#292929ff";
 /* --- fixed nutrient column width used when a brand shows the allergen grid --- */
 const NUTRIENT_COL_WIDTH_WITH_ALLERGENS = 31.5;
 
-/* --- ALLERGEN DEFINITIONS (brand-agnostic; unused when hasAllergens is false) --- */
-const allergenColumns = [
-  "gluten",
-  "rakfelek",
-  "tojas",
-  "hal",
-  "foldimogyoro",
-  "szojabab",
-  "tej",
-  "diofelek",
-  "zeller",
-  "mustar",
-  "szezammag",
-  "ken-dioxid",
-  "csillagfurt",
-  "puhatestuek",
-] as const;
-
-const allergenNames: { [key in (typeof allergenColumns)[number]]: string } = {
-  gluten: "Glutén",
-  rakfelek: "Rákfélék",
-  tojas: "Tojás",
-  hal: "Hal",
-  foldimogyoro: "Földimogyoró",
-  szojabab: "Szójabab",
-  tej: "Tej",
-  diofelek: "Diófélék",
-  zeller: "Zeller",
-  mustar: "Mustár",
-  szezammag: "Szezámmag",
-  "ken-dioxid": "Kén-dioxid",
-  csillagfurt: "Csillagfürt",
-  puhatestuek: "Puhatestűek",
-};
-
 /* --- HELPERS --- */
 function normaliseCategory(brand: BrandConfig, cat: string | null): string {
   if (!cat) return "";
@@ -207,6 +172,7 @@ export async function renderNutritionPdf(brand: BrandConfig, rows: any[]) {
     key,
     label: NUTRIENT_FIELD_DEFS[key].label,
   }));
+  const allergenColumns = brand.allergenKeys ?? [];
 
   const NAME_COL_WIDTH = brand.nameColWidth;
   const X_BASE = MARGIN.l + NAME_COL_WIDTH;
@@ -334,7 +300,7 @@ export async function renderNutritionPdf(brand: BrandConfig, rows: any[]) {
                 fontWeight: 400,
               }}
             >
-              {allergenNames[ak]}
+              {ALLERGEN_FIELD_DEFS[ak].label}
             </Text>
           ))}
 
@@ -504,9 +470,7 @@ export async function renderNutritionPdf(brand: BrandConfig, rows: any[]) {
               lineHeight: 1.4,
             }}
           >
-            Az egyes termékeinkben található allergének ételeink feldolgozási
-            technológiájának jellegéből adódóan nyomokban előfordulhatnak más
-            termékekben.
+            {brand.allergenDisclaimer}
           </Text>
         )}
       </Page>

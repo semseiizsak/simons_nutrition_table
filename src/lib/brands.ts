@@ -19,6 +19,56 @@ export const NUTRIENT_FIELD_DEFS: Record<NutrientKey, { label: string }> = {
   fiber_g: { label: "Rost\n(g)" },
 };
 
+export type AllergenKey =
+  | "gluten"
+  | "rakfelek"
+  | "tojas"
+  | "hal"
+  | "foldimogyoro"
+  | "szojabab"
+  | "tej"
+  | "diofelek"
+  | "zeller"
+  | "mustar"
+  | "szezammag"
+  | "ken-dioxid"
+  | "csillagfurt"
+  | "puhatestuek";
+
+export const ALLERGEN_FIELD_DEFS: Record<AllergenKey, { label: string }> = {
+  gluten: { label: "Glutén" },
+  rakfelek: { label: "Rákfélék" },
+  tojas: { label: "Tojás" },
+  hal: { label: "Hal" },
+  foldimogyoro: { label: "Földimogyoró" },
+  szojabab: { label: "Szójabab" },
+  tej: { label: "Tej" },
+  diofelek: { label: "Diófélék" },
+  zeller: { label: "Zeller" },
+  mustar: { label: "Mustár" },
+  szezammag: { label: "Szezámmag" },
+  "ken-dioxid": { label: "Kén-dioxid" },
+  csillagfurt: { label: "Csillagfürt" },
+  puhatestuek: { label: "Puhatestűek" },
+};
+
+export const ALL_ALLERGEN_KEYS: AllergenKey[] = [
+  "gluten",
+  "rakfelek",
+  "tojas",
+  "hal",
+  "foldimogyoro",
+  "szojabab",
+  "tej",
+  "diofelek",
+  "zeller",
+  "mustar",
+  "szezammag",
+  "ken-dioxid",
+  "csillagfurt",
+  "puhatestuek",
+];
+
 export interface BrandSection {
   /** canonical value stored in nutrition_items.category */
   key: string;
@@ -47,6 +97,10 @@ export interface BrandConfig {
   /** ordered subset of NUTRIENT_FIELD_DEFS to render */
   nutrientKeys: NutrientKey[];
   hasAllergens: boolean;
+  /** allergen columns to render, in order (only used when hasAllergens is true) */
+  allergenKeys?: AllergenKey[];
+  /** footer disclaimer shown when hasAllergens is true */
+  allergenDisclaimer?: string;
   /** PDF name-column width, in pt */
   nameColWidth: number;
   /** production hostnames mapped to this brand */
@@ -88,6 +142,9 @@ export const BRANDS: Record<string, BrandConfig> = {
       "fiber_g",
     ],
     hasAllergens: true,
+    allergenKeys: ALL_ALLERGEN_KEYS,
+    allergenDisclaimer:
+      "Az egyes termékeinkben található allergének ételeink feldolgozási technológiájának jellegéből adódóan nyomokban előfordulhatnak más termékekben.",
     nameColWidth: 110,
     hostnames: ["nutrition.simonsburger.hu"],
     publicHeading: "NUTRITION & ALLERGENS",
@@ -133,7 +190,18 @@ export const BRANDS: Record<string, BrandConfig> = {
       "protein_g",
       "salt_g",
     ],
-    hasAllergens: false,
+    hasAllergens: true,
+    allergenKeys: [
+      "gluten",
+      "tojas",
+      "tej",
+      "hal",
+      "mustar",
+      "szojabab",
+      "foldimogyoro",
+    ],
+    allergenDisclaimer:
+      "Termékeink közös konyhában készülnek, ezért a keresztszennyeződés lehetősége nem zárható ki.",
     nameColWidth: 160,
     hostnames: ["nutrition.travistenders.hu"],
     publicHeading: "NUTRITION FACTS",
