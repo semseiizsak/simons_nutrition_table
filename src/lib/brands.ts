@@ -159,8 +159,8 @@ export const BRANDS: Record<string, BrandConfig> = {
     // at a comparable visual weight in the header bar
     logoWidth: 114,
     logoHeight: 55,
-    // centered vertically in the 85pt header bar (bar spans -10..75)
-    logoTop: 5,
+    // shifted a bit below center in the 85pt header bar (bar spans -10..75)
+    logoTop: 13,
     pdfHeaderTitle: "TRAVIS' TENDERS\nTÁPANYAGTÁBLÁZAT",
     pdfFilename: "travistenders_nutrition.pdf",
     sections: [
