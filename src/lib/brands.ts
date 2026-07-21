@@ -165,16 +165,16 @@ export const BRANDS: Record<string, BrandConfig> = {
     pdfFilename: "travistenders_nutrition.pdf",
     sections: [
       {
-        key: "SANDWICHES",
-        title: "SANDWICHES",
-        matchers: ["sandwich", "combo", "tender"],
+        key: "COMBOS",
+        title: "COMBOS",
+        matchers: ["combo"],
       },
       {
-        key: "SIDES",
-        title: "SIDES",
-        matchers: ["fries", "toast", "coleslaw", "side"],
+        key: "EXTRAS",
+        title: "EXTRAS",
+        matchers: ["fries", "toast", "coleslaw", "side", "tender", "honey"],
       },
-      { key: "SAUCES", title: "SAUCES", matchers: ["sauce", "honey", "dip"] },
+      { key: "SAUCES", title: "SAUCES", matchers: ["sauce", "dip"] },
       {
         key: "MILKSHAKES",
         title: "MILKSHAKES",
