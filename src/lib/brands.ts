@@ -29,9 +29,9 @@ export const NUTRIENT_FIELD_DEFS: Record<
   ro: {
     kcal: { label: "Energie\n(kcal)" },
     fat_g: { label: "Grăsimi\n(g)" },
-    sat_fat_g: { label: "din care\nsaturate (g)" },
+    sat_fat_g: { label: "Saturate\n(g)" },
     carbs_g: { label: "Carbohidrați\n(g)" },
-    sugar_g: { label: "din care\nzaharuri (g)" },
+    sugar_g: { label: "Zaharuri\n(g)" },
     protein_g: { label: "Proteine\n(g)" },
     salt_g: { label: "Sare\n(g)" },
     fiber_g: { label: "Fibre\n(g)" },
