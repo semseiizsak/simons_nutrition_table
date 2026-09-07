@@ -8,15 +8,34 @@ export type NutrientKey =
   | "salt_g"
   | "fiber_g";
 
-export const NUTRIENT_FIELD_DEFS: Record<NutrientKey, { label: string }> = {
-  kcal: { label: "Energia\n(kcal)" },
-  fat_g: { label: "Zsír\n(g)" },
-  sat_fat_g: { label: "Telített zsír\n(g)" },
-  carbs_g: { label: "Szénhidrát\n(g)" },
-  sugar_g: { label: "Cukor\n(g)" },
-  protein_g: { label: "Fehérje\n(g)" },
-  salt_g: { label: "Só\n(g)" },
-  fiber_g: { label: "Rost\n(g)" },
+/** PDF label language — one dictionary per locale so brands can share the
+ * same canonical nutrient/allergen keys while printing different text. */
+export type Locale = "hu" | "ro";
+
+export const NUTRIENT_FIELD_DEFS: Record<
+  Locale,
+  Record<NutrientKey, { label: string }>
+> = {
+  hu: {
+    kcal: { label: "Energia\n(kcal)" },
+    fat_g: { label: "Zsír\n(g)" },
+    sat_fat_g: { label: "Telített zsír\n(g)" },
+    carbs_g: { label: "Szénhidrát\n(g)" },
+    sugar_g: { label: "Cukor\n(g)" },
+    protein_g: { label: "Fehérje\n(g)" },
+    salt_g: { label: "Só\n(g)" },
+    fiber_g: { label: "Rost\n(g)" },
+  },
+  ro: {
+    kcal: { label: "Energie\n(kcal)" },
+    fat_g: { label: "Grăsimi\n(g)" },
+    sat_fat_g: { label: "din care\nsaturate (g)" },
+    carbs_g: { label: "Carbohidrați\n(g)" },
+    sugar_g: { label: "din care\nzaharuri (g)" },
+    protein_g: { label: "Proteine\n(g)" },
+    salt_g: { label: "Sare\n(g)" },
+    fiber_g: { label: "Fibre\n(g)" },
+  },
 };
 
 export type AllergenKey =
@@ -35,21 +54,42 @@ export type AllergenKey =
   | "csillagfurt"
   | "puhatestuek";
 
-export const ALLERGEN_FIELD_DEFS: Record<AllergenKey, { label: string }> = {
-  gluten: { label: "Glutén" },
-  rakfelek: { label: "Rákfélék" },
-  tojas: { label: "Tojás" },
-  hal: { label: "Hal" },
-  foldimogyoro: { label: "Földimogyoró" },
-  szojabab: { label: "Szójabab" },
-  tej: { label: "Tej" },
-  diofelek: { label: "Diófélék" },
-  zeller: { label: "Zeller" },
-  mustar: { label: "Mustár" },
-  szezammag: { label: "Szezámmag" },
-  "ken-dioxid": { label: "Kén-dioxid" },
-  csillagfurt: { label: "Csillagfürt" },
-  puhatestuek: { label: "Puhatestűek" },
+export const ALLERGEN_FIELD_DEFS: Record<
+  Locale,
+  Record<AllergenKey, { label: string }>
+> = {
+  hu: {
+    gluten: { label: "Glutén" },
+    rakfelek: { label: "Rákfélék" },
+    tojas: { label: "Tojás" },
+    hal: { label: "Hal" },
+    foldimogyoro: { label: "Földimogyoró" },
+    szojabab: { label: "Szójabab" },
+    tej: { label: "Tej" },
+    diofelek: { label: "Diófélék" },
+    zeller: { label: "Zeller" },
+    mustar: { label: "Mustár" },
+    szezammag: { label: "Szezámmag" },
+    "ken-dioxid": { label: "Kén-dioxid" },
+    csillagfurt: { label: "Csillagfürt" },
+    puhatestuek: { label: "Puhatestűek" },
+  },
+  ro: {
+    gluten: { label: "Gluten" },
+    rakfelek: { label: "Crustacee" },
+    tojas: { label: "Ouă" },
+    hal: { label: "Pește" },
+    foldimogyoro: { label: "Arahide" },
+    szojabab: { label: "Soia" },
+    tej: { label: "Lapte" },
+    diofelek: { label: "Fructe cu coajă" },
+    zeller: { label: "Țelină" },
+    mustar: { label: "Muștar" },
+    szezammag: { label: "Susan" },
+    "ken-dioxid": { label: "Dioxid de sulf" },
+    csillagfurt: { label: "Lupin" },
+    puhatestuek: { label: "Moluște" },
+  },
 };
 
 export const ALL_ALLERGEN_KEYS: AllergenKey[] = [
@@ -79,7 +119,9 @@ export interface BrandSection {
 }
 
 export interface BrandConfig {
-  slug: "simons" | "travis";
+  slug: "simons" | "travis" | "ro";
+  /** language for PDF labels (nutrient/allergen headers, disclaimer) */
+  locale: Locale;
   displayName: string;
   primaryColor: string;
   /** filename under public/ */
@@ -112,6 +154,7 @@ export interface BrandConfig {
 export const BRANDS: Record<string, BrandConfig> = {
   simons: {
     slug: "simons",
+    locale: "hu",
     displayName: "Simon's Burger",
     primaryColor: "#2E9747",
     logoFile: "simons_logo.png",
@@ -151,6 +194,7 @@ export const BRANDS: Record<string, BrandConfig> = {
   },
   travis: {
     slug: "travis",
+    locale: "hu",
     displayName: "Travis' Tenders",
     primaryColor: "#CE1441",
     logoFile: "travis_logo.png",
@@ -205,6 +249,55 @@ export const BRANDS: Record<string, BrandConfig> = {
     nameColWidth: 160,
     hostnames: ["nutrition.travistenders.hu"],
     publicHeading: "NUTRITION FACTS",
+  },
+  // Romanian Simon's Burger table — duplicated from `simons` for now.
+  // Meat portions (and therefore nutrient values) differ from the HU menu,
+  // so this is its own brand/dataset with its own admin at /admin/nutrition/ro
+  // rather than a translation layer over the same rows.
+  ro: {
+    slug: "ro",
+    locale: "ro",
+    displayName: "Simon's Burger (RO)",
+    primaryColor: "#2E9747",
+    logoFile: "simons_logo.png",
+    logoWidth: 85,
+    logoHeight: 45,
+    logoTop: 17,
+    pdfHeaderTitle: "SIMON'S BURGER TABEL\nNUTRIȚIONAL ȘI ALERGENI",
+    pdfFilename: "simonsburger_ro_nutrition.pdf",
+    sections: [
+      { key: "BURGEREK", title: "BURGERI", matchers: ["burg"] },
+      {
+        key: "FRIES",
+        title: "CARTOFI PRĂJIȚI",
+        matchers: ["fries", "side", "cartof"],
+      },
+      { key: "MILKSHAKES", title: "MILKSHAKES", matchers: ["milk", "shake"] },
+      { key: "SAUCES", title: "SOSURI", matchers: ["sauc", "sos"] },
+      {
+        key: "REFILL DRINKS (350 ML)",
+        title: "BĂUTURI CU REUMPLERE (350 ML)",
+        matchers: ["drink", "refill", "bautur", "băutur"],
+      },
+    ],
+    nutrientKeys: [
+      "kcal",
+      "fat_g",
+      "sat_fat_g",
+      "carbs_g",
+      "sugar_g",
+      "protein_g",
+      "salt_g",
+      "fiber_g",
+    ],
+    hasAllergens: true,
+    allergenKeys: ALL_ALLERGEN_KEYS,
+    allergenDisclaimer:
+      "Alergenii din produsele noastre pot apărea în urme și în alte produse, datorită tehnologiei comune de preparare.",
+    nameColWidth: 110,
+    // path-based, not a separate domain: lives at nutrition.simonsburger.hu/ro
+    hostnames: [],
+    publicHeading: "NUTRIȚIE ȘI ALERGENI",
   },
 };
 

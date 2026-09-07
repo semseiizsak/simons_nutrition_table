@@ -76,6 +76,13 @@ function getLogoBase64(brand: BrandConfig): string {
           "travis_logo.png"
         );
         break;
+      case "ro":
+        logoPath = path.join(
+          /*turbopackIgnore: true*/ process.cwd(),
+          "public",
+          "simons_logo.png"
+        );
+        break;
       default:
         throw new Error(`No logo path configured for brand: ${brand.slug}`);
     }
@@ -119,30 +126,47 @@ function normaliseCategory(brand: BrandConfig, cat: string | null): string {
   return upper;
 }
 
+// strips Romanian/Hungarian diacritics (ă,â,î,ș,ş,ț,ţ,ő,ű,...) so keyword
+// matching below doesn't have to special-case every accented spelling
+function foldDiacritics(s: string): string {
+  return s.normalize("NFD").replace(/[̀-ͯ]/g, "");
+}
+
 function parseAllergens(s: string | null): Set<string> {
   const set = new Set<string>();
   if (!s) return set;
   s.toLowerCase()
     .split(/[\s,;\/]+/)
-    .map((t) => t.trim())
+    .map((t) => foldDiacritics(t.trim()))
     .filter(Boolean)
     .forEach((part) => {
       if (part.includes("glut")) set.add("gluten");
-      if (part.includes("rak")) set.add("rakfelek");
-      if (part.includes("toj")) set.add("tojas");
-      if (part.includes("hal") || part.includes("fish")) set.add("hal");
-      if (part.includes("mogy") || part.includes("peanut"))
+      if (part.includes("rak") || part.includes("crustac"))
+        set.add("rakfelek");
+      if (part.includes("toj") || part === "ou" || part.includes("oua"))
+        set.add("tojas");
+      if (part.includes("hal") || part.includes("fish") || part.includes("peste"))
+        set.add("hal");
+      if (
+        part.includes("mogy") ||
+        part.includes("peanut") ||
+        part.includes("arahid")
+      )
         set.add("foldimogyoro");
-      if (part.includes("soy") || part.includes("szoj")) set.add("szojabab");
-      if (part.includes("milk") || part.includes("tej")) set.add("tej");
-      if (part.includes("dio")) set.add("diofelek");
-      if (part.includes("zell")) set.add("zeller");
+      if (part.includes("soy") || part.includes("szoj") || part.includes("soia"))
+        set.add("szojabab");
+      if (part.includes("milk") || part.includes("tej") || part.includes("lapte"))
+        set.add("tej");
+      if (part.includes("dio") || part.includes("nuc")) set.add("diofelek");
+      if (part.includes("zell") || part.includes("telin")) set.add("zeller");
       if (part.includes("must")) set.add("mustar");
-      if (part.includes("szez")) set.add("szezammag");
+      if (part.includes("szez") || part.includes("susan"))
+        set.add("szezammag");
       if (part.includes("dioxid") || part.includes("sulf"))
         set.add("ken-dioxid");
-      if (part.includes("csillag")) set.add("csillagfurt");
-      if (part.includes("puha") || part.includes("mollusc"))
+      if (part.includes("csillag") || part.includes("lupin"))
+        set.add("csillagfurt");
+      if (part.includes("puha") || part.includes("mollusc") || part.includes("molus"))
         set.add("puhatestuek");
     });
   return set;
@@ -170,7 +194,7 @@ export async function renderNutritionPdf(brand: BrandConfig, rows: any[]) {
 
   const nutrientColumns = brand.nutrientKeys.map((key) => ({
     key,
-    label: NUTRIENT_FIELD_DEFS[key].label,
+    label: NUTRIENT_FIELD_DEFS[brand.locale][key].label,
   }));
   const allergenColumns = brand.allergenKeys ?? [];
 
@@ -300,7 +324,7 @@ export async function renderNutritionPdf(brand: BrandConfig, rows: any[]) {
                 fontWeight: 400,
               }}
             >
-              {ALLERGEN_FIELD_DEFS[ak].label}
+              {ALLERGEN_FIELD_DEFS[brand.locale][ak].label}
             </Text>
           ))}
 
