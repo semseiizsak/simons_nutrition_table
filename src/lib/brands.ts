@@ -39,7 +39,7 @@ export const NUTRIENT_FIELD_DEFS: Record<
   sk: {
     kcal: { label: "Energia\n(kcal)" },
     fat_g: { label: "Tuky\n(g)" },
-    sat_fat_g: { label: "Nasýtené tuky\n(g)" },
+    sat_fat_g: { label: "Nasýtené\n(g)" },
     carbs_g: { label: "Sacharidy\n(g)" },
     sugar_g: { label: "Cukry\n(g)" },
     protein_g: { label: "Bielkoviny\n(g)" },
