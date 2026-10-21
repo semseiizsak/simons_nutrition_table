@@ -144,7 +144,7 @@ function parseAllergens(s: string | null): Set<string> {
     .map((t) => foldDiacritics(t.trim()))
     .filter(Boolean)
     .forEach((part) => {
-      if (part.includes("glut")) set.add("gluten");
+      if (part.includes("glut") || part.includes("lepok")) set.add("gluten");
       if (part.includes("rak") || part.includes("crustac") || part.includes("korov"))
         set.add("rakfelek");
       if (
@@ -165,15 +165,11 @@ function parseAllergens(s: string | null): Set<string> {
         part.includes("mogy") ||
         part.includes("peanut") ||
         part.includes("arahid") ||
-        part.includes("arasid")
+        part.includes("arasid") ||
+        part.includes("podzemn")
       )
         set.add("foldimogyoro");
-      if (
-        part.includes("soy") ||
-        part.includes("szoj") ||
-        part.includes("soia") ||
-        part.includes("soja")
-      )
+      if (part.includes("soy") || part.includes("szoj") || part.includes("soia") || part.includes("soj"))
         set.add("szojabab");
       if (
         part.includes("milk") ||
