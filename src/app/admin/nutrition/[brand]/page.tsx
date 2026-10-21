@@ -64,6 +64,7 @@ export default function NutritionAdminPage() {
         protein_g: 0,
         salt_g: 0,
         fiber_g: brand.nutrientKeys.includes("fiber_g") ? 0 : null,
+        gramaj_g: brand.hasGramaj ? 0 : null,
         allergens: "",
         category: brand.sections[0].key,
         position: items.length + 1,
@@ -116,6 +117,10 @@ export default function NutritionAdminPage() {
         fiber_g:
           r.fiber_g !== undefined && r.fiber_g !== ""
             ? Number(r.fiber_g)
+            : null,
+        gramaj_g:
+          r.gramaj_g !== undefined && r.gramaj_g !== ""
+            ? Number(r.gramaj_g)
             : null,
         allergens: r.allergens || "",
         category: r.category || brand.sections[0].key,
@@ -226,6 +231,7 @@ export default function NutritionAdminPage() {
                   "#",
                   "Category",
                   "Name",
+                  ...(brand.hasGramaj ? ["gramaj_g"] : []),
                   ...numericKeys,
                   "allergens",
                   "position",
@@ -273,6 +279,22 @@ export default function NutritionAdminPage() {
                       }
                     />
                   </td>
+                  {brand.hasGramaj && (
+                    <td className="border-t px-2 py-1">
+                      <input
+                        type="number"
+                        className="border border-gray-300 rounded px-2 py-1 w-20 text-right focus:ring-2 focus:ring-[var(--brand)]"
+                        value={it.gramaj_g ?? ""}
+                        onChange={(e) =>
+                          updateField(
+                            it.id!,
+                            "gramaj_g",
+                            e.target.value === "" ? null : Number(e.target.value)
+                          )
+                        }
+                      />
+                    </td>
+                  )}
                   {numericKeys.map((key: NutrientKey) => (
                     <td key={key} className="border-t px-2 py-1">
                       <input

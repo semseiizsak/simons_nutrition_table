@@ -114,6 +114,9 @@ const GRID_DARK = "#292929ff";
 /* --- fixed nutrient column width used when a brand shows the allergen grid --- */
 const NUTRIENT_COL_WIDTH_WITH_ALLERGENS = 31.5;
 
+/* --- width of the optional portion-weight (gramaj) column --- */
+const GRAMAJ_COL_WIDTH = 31.5;
+
 /* --- HELPERS --- */
 function normaliseCategory(brand: BrandConfig, cat: string | null): string {
   if (!cat) return "";
@@ -199,7 +202,8 @@ export async function renderNutritionPdf(brand: BrandConfig, rows: any[]) {
   const allergenColumns = brand.allergenKeys ?? [];
 
   const NAME_COL_WIDTH = brand.nameColWidth;
-  const X_BASE = MARGIN.l + NAME_COL_WIDTH;
+  const GRAMAJ_X = MARGIN.l + NAME_COL_WIDTH;
+  const X_BASE = GRAMAJ_X + (brand.hasGramaj ? GRAMAJ_COL_WIDTH : 0);
 
   let NUTRIENT_COL_WIDTH: number;
   let allergenAreaX = 0;
@@ -307,6 +311,25 @@ export async function renderNutritionPdf(brand: BrandConfig, rows: any[]) {
           </Text>
         ))}
 
+        {/* Rotated gramaj header */}
+        {brand.hasGramaj && (
+          <Text
+            style={{
+              position: "absolute",
+              top: HEADER_BAR_HEIGHT + 54,
+              left: GRAMAJ_X + 12,
+              fontSize: 8,
+              transform: "rotate(-90deg)",
+              transformOrigin: "left top",
+              textAlign: "center",
+              fontFamily: "Open Sans",
+              fontWeight: 700,
+            }}
+          >
+            {(brand.gramajLabel ?? "Gramaj\n(g)").replace(/\n/g, " ")}
+          </Text>
+        )}
+
         {/* Rotated allergen headers */}
         {brand.hasAllergens &&
           allergenColumns.map((ak, i) => (
@@ -345,7 +368,7 @@ export async function renderNutritionPdf(brand: BrandConfig, rows: any[]) {
         {/* Vertical grid lines */}
         {[
           MARGIN.l,
-          MARGIN.l + NAME_COL_WIDTH,
+          GRAMAJ_X,
           ...nutrientColumns.map((_, i) => X_BASE + i * NUTRIENT_COL_WIDTH),
           ...(brand.hasAllergens
             ? [
@@ -440,6 +463,22 @@ export async function renderNutritionPdf(brand: BrandConfig, rows: any[]) {
               >
                 {it.name}
               </Text>
+
+              {/* Gramaj value — Regular (400) */}
+              {brand.hasGramaj && (
+                <Text
+                  style={{
+                    position: "absolute",
+                    top: yPos,
+                    left: GRAMAJ_X + 2,
+                    fontFamily: "Open Sans",
+                    fontWeight: 400,
+                    fontSize: 6.5,
+                  }}
+                >
+                  {it.gramaj_g ?? ""}
+                </Text>
+              )}
 
               {/* Nutrient values — Regular (400) */}
               {nutrientColumns.map((c, j) => (

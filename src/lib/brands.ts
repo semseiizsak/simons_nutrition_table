@@ -149,6 +149,10 @@ export interface BrandConfig {
   hostnames: string[];
   /** hero heading on the public landing page */
   publicHeading: string;
+  /** show a portion-weight (grams) column before the nutrient columns */
+  hasGramaj?: boolean;
+  /** PDF header label for the gramaj column (may contain a literal \n) */
+  gramajLabel?: string;
 }
 
 export const BRANDS: Record<string, BrandConfig> = {
@@ -298,6 +302,8 @@ export const BRANDS: Record<string, BrandConfig> = {
     // path-based, not a separate domain: lives at nutrition.simonsburger.hu/ro
     hostnames: [],
     publicHeading: "NUTRIȚIE ȘI ALERGENI",
+    hasGramaj: true,
+    gramajLabel: "Gramaj\n(g)",
   },
 };
 

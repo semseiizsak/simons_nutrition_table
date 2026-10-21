@@ -12,6 +12,7 @@ sugar_g: z.number().nonnegative(),
 protein_g: z.number().nonnegative(),
 salt_g: z.number().nonnegative(),
 fiber_g: z.number().nonnegative().nullable().optional(),
+gramaj_g: z.number().nonnegative().nullable().optional(),
 allergens: z.string().default(''),
 position: z.number().int().nonnegative().default(0),
 })
