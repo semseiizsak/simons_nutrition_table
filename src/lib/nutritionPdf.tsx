@@ -102,6 +102,10 @@ const PAGE_HEIGHT = 842;
 /* --- LAYOUT CONSTANTS --- */
 const MARGIN = { l: 15, r: 22, t: 22, b: 22 };
 const HEADER_BAR_HEIGHT = 85;
+// anchor (bottom) of the rotated column-header labels, relative to
+// HEADER_BAR_HEIGHT — bumped from 54 to give long labels (e.g. SK's
+// "Nasýtený tuk (g)") a bit more clearance above the green bar
+const LABEL_ANCHOR_OFFSET = 60;
 const COLUMN_LABEL_OFFSET = 15;
 const LABEL_ROW_HEIGHT = 24;
 const SECTION_BAR_HEIGHT = 18;
@@ -254,7 +258,7 @@ export async function renderNutritionPdf(brand: BrandConfig, rows: any[]) {
   }
 
   const startY =
-    HEADER_BAR_HEIGHT + COLUMN_LABEL_OFFSET + LABEL_ROW_HEIGHT + 20;
+    HEADER_BAR_HEIGHT + COLUMN_LABEL_OFFSET + LABEL_ROW_HEIGHT + 26;
   let y = startY;
   const bars: { y: number; title: string }[] = [];
   const rowsDraw: any[] = [];
@@ -330,7 +334,7 @@ export async function renderNutritionPdf(brand: BrandConfig, rows: any[]) {
             key={col.key}
             style={{
               position: "absolute",
-              top: HEADER_BAR_HEIGHT + 54,
+              top: HEADER_BAR_HEIGHT + LABEL_ANCHOR_OFFSET,
               left: X_BASE + i * NUTRIENT_COL_WIDTH + 12,
               fontSize: 8,
               transform: "rotate(-90deg)",
@@ -349,7 +353,7 @@ export async function renderNutritionPdf(brand: BrandConfig, rows: any[]) {
           <Text
             style={{
               position: "absolute",
-              top: HEADER_BAR_HEIGHT + 54,
+              top: HEADER_BAR_HEIGHT + LABEL_ANCHOR_OFFSET,
               left: GRAMAJ_X + 12,
               fontSize: 8,
               transform: "rotate(-90deg)",
@@ -370,7 +374,7 @@ export async function renderNutritionPdf(brand: BrandConfig, rows: any[]) {
               key={`alg-${ak}`}
               style={{
                 position: "absolute",
-                top: HEADER_BAR_HEIGHT + 54,
+                top: HEADER_BAR_HEIGHT + LABEL_ANCHOR_OFFSET,
                 left: allergenAreaX + i * aColW + aColW / 2 - 4,
                 fontSize: 7,
                 transform: "rotate(-90deg)",
