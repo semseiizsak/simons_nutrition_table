@@ -10,7 +10,7 @@ export type NutrientKey =
 
 /** PDF label language — one dictionary per locale so brands can share the
  * same canonical nutrient/allergen keys while printing different text. */
-export type Locale = "hu" | "ro";
+export type Locale = "hu" | "ro" | "sk";
 
 export const NUTRIENT_FIELD_DEFS: Record<
   Locale,
@@ -35,6 +35,16 @@ export const NUTRIENT_FIELD_DEFS: Record<
     protein_g: { label: "Proteine\n(g)" },
     salt_g: { label: "Sare\n(g)" },
     fiber_g: { label: "Fibre\n(g)" },
+  },
+  sk: {
+    kcal: { label: "Energia\n(kcal)" },
+    fat_g: { label: "Tuky\n(g)" },
+    sat_fat_g: { label: "Nasýtené tuky\n(g)" },
+    carbs_g: { label: "Sacharidy\n(g)" },
+    sugar_g: { label: "Cukry\n(g)" },
+    protein_g: { label: "Bielkoviny\n(g)" },
+    salt_g: { label: "Soľ\n(g)" },
+    fiber_g: { label: "Vláknina\n(g)" },
   },
 };
 
@@ -90,6 +100,22 @@ export const ALLERGEN_FIELD_DEFS: Record<
     csillagfurt: { label: "Lupin" },
     puhatestuek: { label: "Moluște" },
   },
+  sk: {
+    gluten: { label: "Gluten" },
+    rakfelek: { label: "Kôrovce" },
+    tojas: { label: "Vajcia" },
+    hal: { label: "Ryby" },
+    foldimogyoro: { label: "Arašidy" },
+    szojabab: { label: "Sója" },
+    tej: { label: "Mlieko" },
+    diofelek: { label: "Orechy" },
+    zeller: { label: "Zeler" },
+    mustar: { label: "Horčica" },
+    szezammag: { label: "Sezam" },
+    "ken-dioxid": { label: "Oxid siričitý" },
+    csillagfurt: { label: "Vlčí bôb" },
+    puhatestuek: { label: "Mäkkýše" },
+  },
 };
 
 export const ALL_ALLERGEN_KEYS: AllergenKey[] = [
@@ -119,7 +145,7 @@ export interface BrandSection {
 }
 
 export interface BrandConfig {
-  slug: "simons" | "travis" | "ro";
+  slug: "simons" | "travis" | "ro" | "sk";
   /** language for PDF labels (nutrient/allergen headers, disclaimer) */
   locale: Locale;
   displayName: string;
@@ -304,6 +330,54 @@ export const BRANDS: Record<string, BrandConfig> = {
     publicHeading: "NUTRIȚIE ȘI ALERGENI",
     hasGramaj: true,
     gramajLabel: "Gramaj\n(g)",
+  },
+  // Slovak Simon's Burger table — duplicated from `simons` for now, same
+  // pattern as `ro`: its own brand/dataset with its own admin at
+  // /admin/nutrition/sk rather than a translation layer over the HU rows.
+  sk: {
+    slug: "sk",
+    locale: "sk",
+    displayName: "Simon's Burger (SK)",
+    primaryColor: "#2E9747",
+    logoFile: "simons_logo.png",
+    logoWidth: 85,
+    logoHeight: 45,
+    logoTop: 17,
+    pdfHeaderTitle: "SIMON'S BURGER TABUĽKA\nVÝŽIVOVÝCH HODNÔT A ALERGÉNOV",
+    pdfFilename: "simonsburger_sk_nutrition.pdf",
+    sections: [
+      { key: "BURGEREK", title: "BURGERY", matchers: ["burg"] },
+      {
+        key: "FRIES",
+        title: "HRANOLKY",
+        matchers: ["fries", "side", "hranol"],
+      },
+      { key: "MILKSHAKES", title: "MILKSHAKES", matchers: ["milk", "shake"] },
+      { key: "SAUCES", title: "OMÁČKY", matchers: ["sauc", "omack", "omáčk"] },
+      {
+        key: "REFILL DRINKS (350 ML)",
+        title: "NÁPOJE S DOPĹŇANÍM (350 ML)",
+        matchers: ["drink", "refill", "napoj", "nápoj"],
+      },
+    ],
+    nutrientKeys: [
+      "kcal",
+      "fat_g",
+      "sat_fat_g",
+      "carbs_g",
+      "sugar_g",
+      "protein_g",
+      "salt_g",
+      "fiber_g",
+    ],
+    hasAllergens: true,
+    allergenKeys: ALL_ALLERGEN_KEYS,
+    allergenDisclaimer:
+      "Alergény z našich výrobkov sa môžu v stopovom množstve vyskytovať aj v iných výrobkoch, vzhľadom na spoločnú technológiu prípravy.",
+    nameColWidth: 110,
+    // path-based, not a separate domain: lives at nutrition.simonsburger.hu/sk
+    hostnames: [],
+    publicHeading: "VÝŽIVA A ALERGÉNY",
   },
 };
 

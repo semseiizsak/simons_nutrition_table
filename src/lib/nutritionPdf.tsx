@@ -77,6 +77,7 @@ function getLogoBase64(brand: BrandConfig): string {
         );
         break;
       case "ro":
+      case "sk":
         logoPath = path.join(
           /*turbopackIgnore: true*/ process.cwd(),
           "public",
@@ -144,32 +145,68 @@ function parseAllergens(s: string | null): Set<string> {
     .filter(Boolean)
     .forEach((part) => {
       if (part.includes("glut")) set.add("gluten");
-      if (part.includes("rak") || part.includes("crustac"))
+      if (part.includes("rak") || part.includes("crustac") || part.includes("korov"))
         set.add("rakfelek");
-      if (part.includes("toj") || part === "ou" || part.includes("oua"))
+      if (
+        part.includes("toj") ||
+        part === "ou" ||
+        part.includes("oua") ||
+        part.includes("vajc")
+      )
         set.add("tojas");
-      if (part.includes("hal") || part.includes("fish") || part.includes("peste"))
+      if (
+        part.includes("hal") ||
+        part.includes("fish") ||
+        part.includes("peste") ||
+        part.includes("ryb")
+      )
         set.add("hal");
       if (
         part.includes("mogy") ||
         part.includes("peanut") ||
-        part.includes("arahid")
+        part.includes("arahid") ||
+        part.includes("arasid")
       )
         set.add("foldimogyoro");
-      if (part.includes("soy") || part.includes("szoj") || part.includes("soia"))
+      if (
+        part.includes("soy") ||
+        part.includes("szoj") ||
+        part.includes("soia") ||
+        part.includes("soja")
+      )
         set.add("szojabab");
-      if (part.includes("milk") || part.includes("tej") || part.includes("lapte"))
+      if (
+        part.includes("milk") ||
+        part.includes("tej") ||
+        part.includes("lapte") ||
+        part.includes("mliek")
+      )
         set.add("tej");
-      if (part.includes("dio") || part.includes("nuc")) set.add("diofelek");
-      if (part.includes("zell") || part.includes("telin")) set.add("zeller");
-      if (part.includes("must")) set.add("mustar");
-      if (part.includes("szez") || part.includes("susan"))
+      if (part.includes("dio") || part.includes("nuc") || part.includes("orech"))
+        set.add("diofelek");
+      if (part.includes("zell") || part.includes("telin") || part === "zeler")
+        set.add("zeller");
+      if (part.includes("must") || part.includes("horcic")) set.add("mustar");
+      if (part.includes("szez") || part.includes("susan") || part.includes("sezam"))
         set.add("szezammag");
-      if (part.includes("dioxid") || part.includes("sulf"))
+      if (
+        part.includes("dioxid") ||
+        part.includes("sulf") ||
+        part.includes("siric")
+      )
         set.add("ken-dioxid");
-      if (part.includes("csillag") || part.includes("lupin"))
+      if (
+        part.includes("csillag") ||
+        part.includes("lupin") ||
+        part.includes("vlci")
+      )
         set.add("csillagfurt");
-      if (part.includes("puha") || part.includes("mollusc") || part.includes("molus"))
+      if (
+        part.includes("puha") ||
+        part.includes("mollusc") ||
+        part.includes("molus") ||
+        part.includes("makky")
+      )
         set.add("puhatestuek");
     });
   return set;
